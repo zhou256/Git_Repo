@@ -10,3 +10,10 @@ https://blog.csdn.net/jp_zhou256/article/details/83689224
 3.cmath2018获奖统计分析.py主要实现对2018年"华为杯"数模获奖院校信息的批量统计和分析。
 展示效果参见个人博客:
 https://blog.csdn.net/jp_zhou256/article/details/83959856
+
+4.spam classifier.py文件实现了基于Bayes和SVM的垃圾邮件分类器的训练和预测。
+write a spam filter based on a publicly available mail data set called ling-spam. The download address of the ling-spam dataset is as follows:
+http://t.cn/RKQBl9c
+
+Here we have extracted the same amount of spam and non-spam from ling-spam. The specific download address is as follows:
+http://t.cn/RKQBkRu
