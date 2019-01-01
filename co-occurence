@@ -1,1 +1,69 @@
+import os, sys
+import jieba, codecs, math
+import jieba.posseg as pseg
+
+
+names = {}			# 姓名字典
+relationships = {}	# 关系字典
+lineNames = []		# 每段内人物关系
+totalcixing=[] #记录各行的词性
+k=0 #记录行数
+
+# count names
+jieba.load_userdict("C:/Users/Administrator/Desktop/people_name/dict.txt")		# 加载字典
+with codecs.open("C:/Users/Administrator/Desktop/people_name/人民的名义1.txt", "rb", "utf-8") as f:
+	for line in f.readlines():
+		poss = pseg.cut(line)		# 分词并返回该词词性
+		lineNames.append([])		# # 为新读入的一段添加人物名称列表,初始化添加元素是一个list对象
+		cixing=[]
+		for w in poss:
+			if w.flag != "nr" or len(w.word) < 2:
+				continue			# 当分词长度小于2或该词词性不为nr时认为该词不为人名
+			lineNames[-1].append(w.word)		# 为当前段的环境增加一个人物
+			if names.get(w.word) is None:
+				names[w.word] = 0
+				relationships[w.word] = {}
+			names[w.word] += 1					# 该人物出现次数加 1
+		 totalcixing.append(cixing) 
+                 k+=1
+                 totalcixing[0] #这样子在控制台输出后,可以看到第0行的词性
+ 
+# explore relationships
+for line in lineNames:					# 对于每一段
+	for name1 in line:					
+		for name2 in line:				# 每段中的任意两个人
+			if name1 == name2:
+				continue
+			if relationships[name1].get(name2) is None:		# 若两人尚未同时出现则新建项
+				relationships[name1][name2]= 1
+			else:
+				relationships[name1][name2] = relationships[name1][name2]+ 1		# 两人共同出现次数加 1
+
+# output
+#with codecs.open("C:/Users/Administrator/Desktop/output/busan_node.txt", "w", "gbk") as f:
+#	f.write("Id Label Weight\r\n")
+#	for name, times in names.items():
+#		f.write(name + " " + name + " " + str(times) + "\r\n")
+list_node=[]
+import pandas as pd
+for name, times in names.items():
+    #print('name1: ',name,'name2: ',name,'频数: ',times)
+    list_node.append([name,name,times])
+df1=pd.DataFrame(list_node,columns=['Id','Label','weight'])
+df1.to_csv('C:/Users/Administrator/Desktop/people_name/output/node.csv',index=False)
+#
+#with codecs.open("C:/Users/Administrator/Desktop/output/busan_edge.txt", "w", "gbk") as f:
+#	f.write("Source Target Weight\r\n")
+#	for name, edges in relationships.items():
+#		for v, w in edges.items():
+#			if w > 3:
+#				f.write(name + " " + v + " " + str(w) + "\r\n")
+list_edge=[]
+for name, edges in relationships.items():
+    for v, w in edges.items():
+        if w > 3:
+            list_edge.append([name, v ,str(w)])
+df2=pd.DataFrame(list_edge,columns=['Source','Target','weight'])
+df2.to_csv('C:/Users/Administrator/Desktop/people_name/output/edge.csv',index=False)
+#至此，代码就生成了目标文件: node.csv,edge.csv文件
 
