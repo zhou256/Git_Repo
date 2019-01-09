@@ -14,3 +14,7 @@ write a spam filter based on a publicly available mail data set called ling-spam
 Here we have extracted the same amount of spam and non-spam from ling-spam. The specific download address is as follows: http://t.cn/RKQBkRu
 
 展示效果参看个人博客: https://blog.csdn.net/jp_zhou256/article/details/84549801
+
+5.针对某段文章，生成特定背景的词云：
+GitHub源码见  wordcloud.zip文件
+展示效果参看个人博客: https://blog.csdn.net/jp_zhou256/article/details/86133351
